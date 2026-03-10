@@ -42,7 +42,7 @@ A specialized utility expansion for the **Meteor Client** (1.21+), designed with
 | :--- | :--- |
 | **Moid-PingSpoof** | Masks your true connection. Features **Static** and **Randomize** modes to mimic real-world network jitter. |
 | **Moid-TargetFocus** | Locks your camera or priority on a specific entity to ensure they never escape. |
-| **Moid-Lag** | Intentionally disrupts your own packet flow to confuse opponents (FakeLag). |
+| **Moid-Fakelag** | Intentionally disrupts your own packet flow to confuse opponents (FakeLag). |
 | **Moid-AutoClicker** | A highly customizable click-macro for non-aura combat styles. |
 
 ---
