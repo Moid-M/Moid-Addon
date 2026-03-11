@@ -4,7 +4,6 @@ import com.example.addon.AddonTemplate;
 import meteordevelopment.meteorclient.events.world.TickEvent;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
-import meteordevelopment.meteorclient.utils.player.PlayerUtils;
 import meteordevelopment.meteorclient.utils.player.Rotations;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.entity.Entity;
@@ -24,19 +23,18 @@ public class MoidKillAura extends Module {
     private final SettingGroup sgBypass = settings.createGroup("Bypass & Simulation");
     private final SettingGroup sgMovement = settings.createGroup("Movement Settings");
 
-    // General & Sorting
     public enum SortMode { Distance, Health, Armor }
     private final Setting<SortMode> sortMode = sgGeneral.add(new EnumSetting.Builder<SortMode>().name("sort-mode").defaultValue(SortMode.Distance).build());
     private final Setting<Double> range = sgGeneral.add(new DoubleSetting.Builder().name("range").defaultValue(2.9).min(1).sliderMax(6).build());
     private final Setting<Set<EntityType<?>>> entities = sgGeneral.add(new EntityTypeListSetting.Builder().name("entities").defaultValue(Set.of(EntityType.PLAYER)).build());
 
-    // Bypass Features
+    // Bypass & Combat Tech
+    private final Setting<Boolean> critMode = sgBypass.add(new BoolSetting.Builder().name("critical-hits").description("Automatically jumps to guarantee critical damage.").defaultValue(false).build());
     private final Setting<Boolean> raycast = sgBypass.add(new BoolSetting.Builder().name("raycast").description("Only hits if looking at target hitbox.").defaultValue(true).build());
     private final Setting<Boolean> simulationFix = sgBypass.add(new BoolSetting.Builder().name("gl-simulation-fix").defaultValue(true).build());
     private final Setting<Integer> rotationBuffer = sgBypass.add(new IntSetting.Builder().name("rotation-buffer").defaultValue(1).min(0).max(3).build());
     private final Setting<Integer> hitChance = sgBypass.add(new IntSetting.Builder().name("hit-chance").defaultValue(100).min(0).max(100).build());
 
-    // Movement & Combat Tech
     private final Setting<Boolean> wTap = sgMovement.add(new BoolSetting.Builder().name("w-tap").description("Resets sprint for extra knockback.").defaultValue(true).build());
     private final Setting<Boolean> autoWalk = sgMovement.add(new BoolSetting.Builder().name("auto-walk").defaultValue(false).build());
     private final Setting<Boolean> moveCorrection = sgMovement.add(new BoolSetting.Builder().name("move-correction").defaultValue(false).build());
@@ -47,7 +45,7 @@ public class MoidKillAura extends Module {
     private float lastYaw, lastPitch;
 
     public MoidKillAura() {
-        super(AddonTemplate.CATEGORY, "moid-kill-aura", "Moid-Aura V3: Target Priority, Raycasting, and W-Tap.");
+        super(AddonTemplate.CATEGORY, "moid-kill-aura", "Moid-Aura V3.2: Anti-Kick Validation & Optional Crits.");
     }
 
     @EventHandler
@@ -70,6 +68,11 @@ public class MoidKillAura extends Module {
             if (raycast.get() && !mc.player.canSee(target)) return;
             
             if (random.nextInt(100) < hitChance.get()) {
+                // Critical Hit Logic: Jump if on ground and crits are enabled
+                if (critMode.get() && mc.player.isOnGround()) {
+                    mc.player.jump();
+                }
+
                 if (wTap.get() || simulationFix.get()) mc.player.setSprinting(false);
                 attack(target);
             } else {
@@ -93,7 +96,7 @@ public class MoidKillAura extends Module {
 
     private Entity findTarget() {
         var targets = StreamSupport.stream(mc.world.getEntities().spliterator(), false)
-            .filter(e -> e != mc.player && e.isAlive() && entities.get().contains(e.getType()))
+            .filter(e -> e != mc.player && e.isAlive() && !e.isRemoved() && entities.get().contains(e.getType()))
             .filter(e -> mc.player.getEyePos().distanceTo(e.getBoundingBox().getCenter()) <= range.get());
 
         return switch (sortMode.get()) {
@@ -104,10 +107,18 @@ public class MoidKillAura extends Module {
     }
 
     private boolean canAttack() {
+        // If CritMode is on, wait until we are falling to hit for maximum damage
+        if (critMode.get() && mc.player.getVelocity().y >= 0 && !mc.player.isOnGround()) return false;
+        
         return mc.player.getAttackCooldownProgress(0.5f) >= 0.95f;
     }
 
     private void attack(Entity entity) {
+        if (entity == null || !entity.isAlive() || entity.isRemoved()) {
+            target = null;
+            return;
+        }
+        
         mc.interactionManager.attackEntity(mc.player, entity);
         mc.player.swingHand(Hand.MAIN_HAND);
     }

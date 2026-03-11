@@ -17,7 +17,6 @@ public class MoidFly extends Module {
     private final Setting<Double> hSpeed = sg.add(new DoubleSetting.Builder().name("horizontal-speed").defaultValue(1.0).min(0.1).sliderMax(5.0).build());
     private final Setting<Double> vSpeed = sg.add(new DoubleSetting.Builder().name("vertical-speed").defaultValue(1.0).min(0.1).sliderMax(5.0).build());
     
-    // Long Jump Logic
     private final Setting<Boolean> longJump = sg.add(new BoolSetting.Builder().name("micro-long-jump").description("Slightly boosts jumps for a 'natural' look.").defaultValue(true).build());
     private final Setting<Double> ljBoost = sg.add(new DoubleSetting.Builder().name("lj-multiplier").defaultValue(1.15).min(1.0).sliderMax(1.5).visible(longJump::get).build());
     
@@ -25,12 +24,11 @@ public class MoidFly extends Module {
     private final Setting<Boolean> antiKick = sg.add(new BoolSetting.Builder().name("anti-kick").defaultValue(true).build());
     private final Setting<Double> kickDip = sg.add(new DoubleSetting.Builder().name("kick-dip-amount").defaultValue(-0.04).min(-0.2).max(0).visible(antiKick::get).build());
 
-    // Packet Settings
-    private final Setting<Double> packetFactor = sg.add(new DoubleSetting.Builder().name("packet-factor").defaultValue(1.0).min(1.1).sliderMax(3.0).visible(() -> mode.get() == Mode.Packet).build());
+    private final Setting<Double> packetFactor = sg.add(new DoubleSetting.Builder().name("packet-factor").defaultValue(1.0).min(1.0).sliderMax(3.0).visible(() -> mode.get() == Mode.Packet).build());
     private final Setting<Boolean> phase = sg.add(new BoolSetting.Builder().name("phase").defaultValue(false).visible(() -> mode.get() == Mode.Packet).build());
 
     public MoidFly() {
-        super(AddonTemplate.CATEGORY, "moid-fly", "Elite flight suite with Micro-LongJump and granular movement controls.");
+        super(AddonTemplate.CATEGORY, "moid-fly", "Elite flight suite with corrected strafing.");
     }
 
     @Override
@@ -111,7 +109,6 @@ public class MoidFly extends Module {
         double x = isMoving() ? dir.x * hSpeed.get() : 0;
         double z = isMoving() ? dir.z * hSpeed.get() : 0;
         
-        // Micro-LongJump Logic
         if (longJump.get() && isMoving() && !mc.player.isOnGround() && mc.player.getVelocity().y > 0) {
             x *= ljBoost.get();
             z *= ljBoost.get();
@@ -121,13 +118,18 @@ public class MoidFly extends Module {
     }
 
     private Vec3d getDirection() {
+        // Correcting the Strafe: Swapped the subtract/add logic for side movement
         Vec3d dir = Vec3d.fromPolar(0, mc.player.getYaw()).normalize();
         Vec3d side = dir.rotateY((float) Math.toRadians(90));
         Vec3d out = new Vec3d(0,0,0);
+        
         if (mc.options.forwardKey.isPressed()) out = out.add(dir);
         if (mc.options.backKey.isPressed()) out = out.subtract(dir);
-        if (mc.options.leftKey.isPressed()) out = out.subtract(side);
-        if (mc.options.rightKey.isPressed()) out = out.add(side);
+        
+        // Swapped these: Left now adds the side vector, Right subtracts it
+        if (mc.options.leftKey.isPressed()) out = out.add(side);
+        if (mc.options.rightKey.isPressed()) out = out.subtract(side);
+        
         return out.normalize();
     }
 
