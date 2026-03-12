@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
   "id": "moid-addon",
-  "version": "1.0.0",
+  "version": "1.2",
   "name": "Moid-Addon",
-  "description": "The official Moid-Addon for Meteor Client. High-end exploits by Dio_M.",
+  "description": "The official Moid-Addon for Meteor Client. High-end exploits and visuals by Dio_M.",
   "authors": [
     "Dio_M"
   ],
   "contact": {
-    "sources": "https://github.com/Dio_M/Moid-Addon"
+    "sources": "https://github.com/DioM34/Moid-Addon"
   },
   "license": "MIT",
   "icon": "assets/template/icon.png",
@@ -18,9 +18,10 @@
       "com.example.addon.AddonTemplate"
     ]
   },
-  "depends": {
-    "fabricloader": ">=0.15.0",
-    "minecraft": "~1.21",
-    "java": ">=21"
+"depends": {
+    "fabricloader": ">=0.15.11",
+    "minecraft": ">=1.21",
+    "java": ">=21",
+    "meteor-client": "*"
   }
 }

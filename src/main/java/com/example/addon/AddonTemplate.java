@@ -16,7 +16,8 @@ public class AddonTemplate extends MeteorAddon {
         Modules m = Modules.get();
         // Movement
         m.add(new MoidFly());
-        
+        m.add(new VulcanWeb());
+                
         // Visuals & HUD
         m.add(new MoidHUD());
         m.add(new MoidCircleESP());
@@ -24,20 +25,16 @@ public class AddonTemplate extends MeteorAddon {
         m.add(new MoidJumpCircle());
         m.add(new MoidJumpMatrix());
         m.add(new MoidTrails());
-        m.add(new MoidTrajectory());
-        m.add(new MoidTargetFocus());
         m.add(new MoidHitESP());
         m.add(new MoidHitParticles());
 
         // Combat & Utility
         m.add(new MoidLag());
-        m.add(new MoidPingSpoof());
         m.add(new MoidKillAura());
         m.add(new MoidAutoClicker());
-        m.add(new MoidTriggerBot());
-        m.add(new InertiaDecay());
-        m.add(new GrimBlink());
         m.add(new ACDetector());
+        m.add(new GrimBlink());
+        m.add(new Triggerbot());
     }
 
     @Override

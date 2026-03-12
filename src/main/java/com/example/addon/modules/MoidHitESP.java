@@ -5,12 +5,14 @@ import meteordevelopment.meteorclient.events.entity.player.AttackEntityEvent;
 import meteordevelopment.meteorclient.events.render.Render3DEvent;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
+import meteordevelopment.meteorclient.utils.render.color.Color;
 import meteordevelopment.meteorclient.utils.render.color.SettingColor;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -18,7 +20,7 @@ import java.util.Set;
 public class MoidHitESP extends Module {
     private final SettingGroup sg = settings.getDefaultGroup();
 
-    public enum Shape { Square, Circle, Triangle, Cross }
+    public enum Shape { Square, Circle, Triangle, Cross, Logo }
     public enum Mode { Flat, Dynamic }
 
     private final Setting<Set<EntityType<?>>> entities = sg.add(new EntityTypeListSetting.Builder().name("entities").defaultValue(Set.of(EntityType.PLAYER)).build());
@@ -29,12 +31,12 @@ public class MoidHitESP extends Module {
     private final Setting<Integer> thickness = sg.add(new IntSetting.Builder().name("thickness").defaultValue(2).min(1).max(5).build());
     private final Setting<Double> spinSpeed = sg.add(new DoubleSetting.Builder().name("spin-speed").defaultValue(5.0).min(0).sliderMax(20).build());
     private final Setting<Double> vOffset = sg.add(new DoubleSetting.Builder().name("height-offset").defaultValue(1.0).min(-1).sliderMax(3).build());
-    private final Setting<SettingColor> color = sg.add(new ColorSetting.Builder().name("color").defaultValue(new SettingColor(255, 50, 50, 200)).build());
+    private final Setting<SettingColor> color = sg.add(new ColorSetting.Builder().name("color").defaultValue(new SettingColor(255, 255, 255, 200)).build());
 
     private final List<HitParticle> hits = new ArrayList<>();
 
     public MoidHitESP() {
-        super(AddonTemplate.CATEGORY, "moid-hit-esp", "Billboarded impact geometry that always faces the player.");
+        super(AddonTemplate.CATEGORY, "moid-hit-esp", "Billboarded impact geometry.");
     }
 
     @EventHandler
@@ -73,19 +75,45 @@ public class MoidHitESP extends Module {
 
             double currentSize = size.get() * (1.0 - (age * 0.3)); 
             int alpha = (int) (color.get().a * (1.0 - age));
-            SettingColor drawCol = new SettingColor(color.get().r, color.get().g, color.get().b, alpha);
+            Color drawCol = new Color(color.get().r, color.get().g, color.get().b, alpha);
             double rotation = (System.currentTimeMillis() / 100.0) * spinSpeed.get();
 
-            if (renderMode.get() == Mode.Dynamic) {
-                // Using event.offsetX/Y/Z which represents the camera position relative to the origin
-                Vec3d cameraPos = new Vec3d(event.offsetX, event.offsetY, event.offsetZ);
-                drawDynamic(event, new Vec3d(x, y, z), cameraPos, currentSize, rotation, drawCol);
+            if (shape.get() == Shape.Logo) {
+                drawGeometricLogo(event, new Vec3d(x, y, z), new Vec3d(event.offsetX, event.offsetY, event.offsetZ), currentSize, rotation, drawCol);
+            } else if (renderMode.get() == Mode.Dynamic) {
+                drawDynamic(event, new Vec3d(x, y, z), new Vec3d(event.offsetX, event.offsetY, event.offsetZ), currentSize, rotation, drawCol);
             } else {
                 drawFlat(event, x, y, z, currentSize, rotation, drawCol);
             }
         }
 
-        private void drawFlat(Render3DEvent event, double x, double y, double z, double s, double r, SettingColor col) {
+        private void drawGeometricLogo(Render3DEvent event, Vec3d pos, Vec3d cam, double s, double r, Color col) {
+            // Draws a custom geometric "Moid" symbol that always faces the camera
+            Vec3d dir = cam.subtract(pos).normalize();
+            Vec3d right = new Vec3d(0, 1, 0).crossProduct(dir).normalize();
+            Vec3d up = dir.crossProduct(right).normalize();
+
+            double rad = Math.toRadians(r);
+            Vec3d rotatedRight = right.multiply(Math.cos(rad)).add(up.multiply(Math.sin(rad)));
+            Vec3d rotatedUp = up.multiply(Math.cos(rad)).subtract(right.multiply(Math.sin(rad)));
+
+            // Outer Diamond
+            Vec3d top = pos.add(rotatedUp.multiply(s));
+            Vec3d bottom = pos.subtract(rotatedUp.multiply(s));
+            Vec3d left = pos.subtract(rotatedRight.multiply(s));
+            Vec3d rightP = pos.add(rotatedRight.multiply(s));
+
+            event.renderer.line(top.x, top.y, top.z, rightP.x, rightP.y, rightP.z, col);
+            event.renderer.line(rightP.x, rightP.y, rightP.z, bottom.x, bottom.y, bottom.z, col);
+            event.renderer.line(bottom.x, bottom.y, bottom.z, left.x, left.y, left.z, col);
+            event.renderer.line(left.x, left.y, left.z, top.x, top.y, top.z, col);
+
+            // Inner Cross
+            event.renderer.line(top.x, top.y, top.z, bottom.x, bottom.y, bottom.z, col);
+            event.renderer.line(left.x, left.y, left.z, rightP.x, rightP.y, rightP.z, col);
+        }
+
+        private void drawFlat(Render3DEvent event, double x, double y, double z, double s, double r, Color col) {
             int segments = getSegments();
             for (int t = 0; t < thickness.get(); t++) {
                 double off = t * 0.01;
@@ -102,8 +130,7 @@ public class MoidHitESP extends Module {
             }
         }
 
-        private void drawDynamic(Render3DEvent event, Vec3d pos, Vec3d cam, double s, double r, SettingColor col) {
-            // Correct Billboard Vectors
+        private void drawDynamic(Render3DEvent event, Vec3d pos, Vec3d cam, double s, double r, Color col) {
             Vec3d dir = cam.subtract(pos).normalize();
             Vec3d right = new Vec3d(0, 1, 0).crossProduct(dir).normalize();
             Vec3d up = dir.crossProduct(right).normalize();
