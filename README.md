@@ -23,9 +23,9 @@ A specialized utility expansion for the **Meteor Client** (1.21+), designed with
 
 | Module | Description |
 | :--- | :--- |
-| **Moid-KillAura** | **MASSIVE UPDATE.** Advanced combat automation with highly optimized anti-cheat compatibility and smooth aim logic. |
+| **Moid-KillAura** | Advanced combat automation with highly optimized anti-cheat compatibility and smooth aim logic. |
 | **Moid-TriggerBot** | Precision auto-attack when your crosshair meets an enemy. |
-| **VulcaWeb (NoSlow)** | **NEW.** Prevents slowdown from webs and other blocks. *Recommended maximum: 0.650.* |
+| **VulcaWeb (NoSlow)** | Prevents slowdown from webs and other blocks. *Recommended maximum: 0.650.* |
 | **Moid-Fly** | Optimized flight logic for bypassing movement checks on various servers. |
 
 ### 👁️ Visuals & ESP
@@ -33,11 +33,15 @@ A specialized utility expansion for the **Meteor Client** (1.21+), designed with
 | Module | Description |
 | :--- | :--- |
 | **Moid-HUD** | The command center. Shows FPS, Ping, Coords, and Active Modules in a clean, high-performance overlay. |
-| **Moid-HitESP** | Renders a color-fading box exactly where your hits connect. |
-| **Moid Jump Matrix** | Renders a matrix effect when jumping on the floor. |
+| **Moid-CircleESP** | Clean, geometric highlights around entities with expanded customization options. |
 | **Moid-GhostESP** | Visualizes the "ghost" positions of players during backtrack or lag spikes. |
-| **Moid-CircleESP** | **PERFORMANCE UPDATE.** Clean, geometric highlights around entities with expanded customization options. |
+| **Moid-JumpCircle** | Renders a customizable circle around where you jumped off. |
+| **Jump Matrix** | Renders a matrix effect when jumping on the floor. |
 | **Moid-Trails** | Leaves a customizable trail behind you or other players to track movement paths. |
+| **Moid-HitESP** | Renders a color-fading box exactly where your hits connect. |
+| **MoidHitParticles** | Spawns customizable particles on the hit entity. |
+| **ProjectilePredictor** | Predicts where velicity affected entities will land. |
+| **TargetHUD** | An HUD for rendering target information. |
 
 ### ⚙️ Utility & Misc
 
@@ -46,12 +50,14 @@ A specialized utility expansion for the **Meteor Client** (1.21+), designed with
 | **AC-Detector** | A module for finding possible anticheats on servers to exploit them. |
 | **GrimBlink** | A blink module for the GrimAC freezing you in place. |
 | **Moid-TargetFocus** | Locks your camera or priority on a specific entity to ensure they never escape. |
-| **Moid-Fakelag (MoidLag)** | **STABILITY UPDATE.** Intentionally disrupts your own packet flow to confuse opponents. Now crash-proof for 1.21.x. |
+| **Moid-Fakelag (MoidLag)** | **MASSIVE UPDATE.** Intentionally disrupts your own packet flow to confuse opponents. |
 | **Moid-AutoClicker** | A highly customizable click-macro for non-aura combat styles. |
+| **AntiResourcePack** | A module made for bypassing forced resourcepacks from servers. |
+| **GhostHand** | A module which allows you to open containers through walls. |
 
 ---
 
-## ⚠️ The "Vibe-Code" Disclaimer
+## ⚠️ "Vibe-Code" Disclaimer
 
 > **Note:** This entire project has been **vibecoded** and developed in collaboration with **AI (Gemini)**. 
 > 
