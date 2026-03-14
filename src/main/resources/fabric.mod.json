@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "id": "moid-addon",
-  "version": "1.2",
+  "version": "1.3",
   "name": "Moid-Addon",
   "description": "The official Moid-Addon for Meteor Client. High-end exploits and visuals by Dio_M.",
   "authors": [

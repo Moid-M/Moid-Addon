@@ -3,38 +3,50 @@ package com.example.addon.modules;
 import com.example.addon.AddonTemplate;
 import meteordevelopment.meteorclient.events.render.Render3DEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
+import meteordevelopment.meteorclient.renderer.Renderer3D;
 import meteordevelopment.meteorclient.settings.*;
 import meteordevelopment.meteorclient.systems.modules.Module;
+import meteordevelopment.meteorclient.utils.render.color.Color;
 import meteordevelopment.meteorclient.utils.render.color.SettingColor;
 import meteordevelopment.orbit.EventHandler;
 import net.minecraft.util.math.Vec3d;
-import java.util.ArrayList;
-import java.util.List;
+
+import java.util.LinkedList;
 
 public class MoidTrails extends Module {
     private final SettingGroup sg = settings.getDefaultGroup();
+    private final SettingGroup sgColor = settings.createGroup("Colors");
 
-    private final Setting<Integer> trailLength = sg.add(new IntSetting.Builder().name("trail-length").defaultValue(40).min(1).max(200).build());
-    private final Setting<Double> thickness = sg.add(new DoubleSetting.Builder().name("thickness").defaultValue(0.08).min(0.01).sliderMax(0.5).build());
-    private final Setting<Double> fadeSpeed = sg.add(new DoubleSetting.Builder().name("fade-speed").defaultValue(1.0).min(0.1).sliderMax(5.0).build());
-    private final Setting<SettingColor> color = sg.add(new ColorSetting.Builder().name("color").defaultValue(new SettingColor(0, 255, 255, 200)).build());
+    // --- Geometry ---
+    private final Setting<Integer> trailLength = sg.add(new IntSetting.Builder().name("trail-length").defaultValue(40).min(1).max(1000).build());
+    private final Setting<Double> ribbonHeight = sg.add(new DoubleSetting.Builder().name("height").defaultValue(0.2).min(0.01).sliderMax(2.0).build());
+    private final Setting<Double> yOffset = sg.add(new DoubleSetting.Builder().name("y-offset").defaultValue(0.1).min(-1.0).max(1.0).build());
 
-    private final List<TrailPoint> points = new ArrayList<>();
+    // --- Color & Fade ---
+    private final Setting<Boolean> chroma = sgColor.add(new BoolSetting.Builder().name("chroma").defaultValue(false).build());
+    private final Setting<Double> chromaSpeed = sgColor.add(new DoubleSetting.Builder().name("chroma-speed").defaultValue(1.0).min(0.1).sliderMax(5.0).visible(chroma::get).build());
+    
+    private final Setting<SettingColor> startColor = sgColor.add(new ColorSetting.Builder().name("start-color").defaultValue(new SettingColor(0, 255, 255, 200)).visible(() -> !chroma.get()).build());
+    private final Setting<Boolean> useFadeColor = sgColor.add(new BoolSetting.Builder().name("use-fade-color").defaultValue(true).visible(() -> !chroma.get()).build());
+    private final Setting<SettingColor> endColor = sgColor.add(new ColorSetting.Builder().name("end-color").defaultValue(new SettingColor(255, 0, 255, 50)).visible(() -> !chroma.get() && useFadeColor.get()).build());
+    
+    private final Setting<Double> fadeExponent = sgColor.add(new DoubleSetting.Builder().name("fade-curve").defaultValue(1.0).min(0.1).sliderMax(5.0).build());
+
+    private final LinkedList<Vec3d> points = new LinkedList<>();
+    private final Color workingColor = new Color();
 
     public MoidTrails() {
-        super(AddonTemplate.CATEGORY, "moid-trails", "A heavy geometric trail with custom fade animations.");
+        super(AddonTemplate.CATEGORY, "moid-trails", "Customizable ribbon trails with dual-color fading and chroma.");
     }
 
     @EventHandler
     private void onTick(TickEvent.Post event) {
         if (mc.player == null) return;
         
-        // Add current position
-        points.add(new TrailPoint(new Vec3d(mc.player.getX(), mc.player.getY() + 0.1, mc.player.getZ())));
+        points.add(new Vec3d(mc.player.getX(), mc.player.getY() + yOffset.get(), mc.player.getZ()));
         
-        // Remove points that exceed length or age
-        if (points.size() > trailLength.get()) {
-            points.remove(0);
+        while (points.size() > trailLength.get()) {
+            points.removeFirst();
         }
     }
 
@@ -42,29 +54,54 @@ public class MoidTrails extends Module {
     private void onRender(Render3DEvent event) {
         if (points.size() < 2) return;
 
+        double h = ribbonHeight.get();
+
         for (int i = 0; i < points.size() - 1; i++) {
-            TrailPoint p1 = points.get(i);
-            TrailPoint p2 = points.get(i + 1);
+            Vec3d p1 = points.get(i);
+            Vec3d p2 = points.get(i + 1);
 
-            // Calculate fade based on position in list and fadeSpeed
-            double ageFactor = (double) i / points.size();
-            int alpha = (int) (color.get().a * Math.pow(ageFactor, fadeSpeed.get()));
+            // Progress goes from 0 (oldest/end of trail) to 1 (newest/at player)
+            float progress = (float) i / points.size();
             
-            SettingColor drawCol = new SettingColor(color.get().r, color.get().g, color.get().b, alpha);
+            updateWorkingColor(progress);
+            
+            if (workingColor.a <= 5) continue;
 
-            // Render a "thick" ribbon by drawing multiple offset lines
-            double t = thickness.get();
-            event.renderer.line(p1.pos.x, p1.pos.y, p1.pos.z, p2.pos.x, p2.pos.y, p2.pos.z, drawCol);
-            event.renderer.line(p1.pos.x, p1.pos.y + t, p1.pos.z, p2.pos.x, p2.pos.y + t, p2.pos.z, drawCol);
-            event.renderer.line(p1.pos.x - t, p1.pos.y + (t/2), p1.pos.z - t, p2.pos.x - t, p2.pos.y + (t/2), p2.pos.z - t, drawCol);
-            event.renderer.line(p1.pos.x + t, p1.pos.y + (t/2), p1.pos.z + t, p2.pos.x + t, p2.pos.y + (t/2), p2.pos.z + t, drawCol);
+            // Render the vertical ribbon quad
+            event.renderer.quad(
+                p1.x, p1.y, p1.z,
+                p1.x, p1.y + h, p1.z,
+                p2.x, p2.y + h, p2.z,
+                p2.x, p2.y, p2.z,
+                workingColor
+            );
         }
     }
 
-    private static class TrailPoint {
-        public final Vec3d pos;
-        public TrailPoint(Vec3d pos) {
-            this.pos = pos;
+    private void updateWorkingColor(float progress) {
+        // Calculate dynamic alpha based on fade curve
+        int alpha = (int) (startColor.get().a * Math.pow(progress, fadeExponent.get()));
+
+        if (chroma.get()) {
+            double hue = (System.currentTimeMillis() * (chromaSpeed.get() * 0.1) + (progress * 200)) % 360;
+            java.awt.Color javaCol = java.awt.Color.getHSBColor((float) (hue / 360.0), 0.8f, 1.0f);
+            workingColor.set(javaCol.getRed(), javaCol.getGreen(), javaCol.getBlue(), alpha);
+            return;
+        }
+
+        if (useFadeColor.get()) {
+            SettingColor s = startColor.get();
+            SettingColor e = endColor.get();
+            
+            // Linear interpolation between start and end color
+            workingColor.set(
+                (int) (e.r + (s.r - e.r) * progress),
+                (int) (e.g + (s.g - e.g) * progress),
+                (int) (e.b + (s.b - e.b) * progress),
+                alpha
+            );
+        } else {
+            workingColor.set(startColor.get().r, startColor.get().g, startColor.get().b, alpha);
         }
     }
 }

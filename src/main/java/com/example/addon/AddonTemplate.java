@@ -23,10 +23,12 @@ public class AddonTemplate extends MeteorAddon {
         m.add(new MoidCircleESP());
         m.add(new MoidGhostESP());
         m.add(new MoidJumpCircle());
-        m.add(new MoidJumpMatrix());
+        m.add(new JumpMatrix());
         m.add(new MoidTrails());
         m.add(new MoidHitESP());
         m.add(new MoidHitParticles());
+        m.add(new ProjectilePredictor());
+        m.add(new TargetHUD());
 
         // Combat & Utility
         m.add(new MoidLag());
@@ -35,6 +37,9 @@ public class AddonTemplate extends MeteorAddon {
         m.add(new ACDetector());
         m.add(new GrimBlink());
         m.add(new Triggerbot());
+        m.add(new AntiResourcePack());
+        m.add(new GhostHand());
+        m.add(new MoidAim());
     }
 
     @Override
