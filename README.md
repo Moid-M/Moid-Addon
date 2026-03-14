@@ -1,4 +1,4 @@
-# Moid Addon 🌑
+# Moid Addon 
 
 A specialized utility expansion for the **Meteor Client** (1.21+), designed with a focus on performance, internationalization, and "vibe-coded" logic. 
 
