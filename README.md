@@ -6,10 +6,10 @@
 
 A specialized utility expansion for the **Meteor Client** (1.21+), designed with a focus on performance, internationalization, and "vibe-coded" logic. 
 
-![Version](https://img.shields.io/github/v/release/DioM34/Moid-Addon?style=for-the-badge&color=A503FC)
-![Downloads](https://img.shields.io/github/downloads/DioM34/Moid-Addon/total?style=for-the-badge&color=FC03BA)
-![Code Size](https://img.shields.io/github/languages/code-size/DioM34/Moid-Addon?style=for-the-badge&color=A503FC)
-![Last Commit](https://img.shields.io/github/last-commit/DioM34/Moid-Addon?style=for-the-badge&color=FC03BA)
+![Version](https://img.shields.io/github/v/release/Moid-M/Moid-Addon?style=for-the-badge&color=A503FC)
+![Downloads](https://img.shields.io/github/downloads/Moid-M/Moid-Addon/total?style=for-the-badge&color=FC03BA)
+![Code Size](https://img.shields.io/github/languages/code-size/Moid-M/Moid-Addon?style=for-the-badge&color=A503FC)
+![Last Commit](https://img.shields.io/github/last-commit/Moid-M/Moid-Addon?style=for-the-badge&color=FC03BA)
 
 [![Discord](https://img.shields.io/discord/1414639616731906121?label=Discord&logo=discord&logoColor=white&style=for-the-badge&color=7289DA)](https://discord.gg/Uq8TRfhHkc)
 ![Minecraft](https://img.shields.io/badge/Minecraft-1.21.x-brightgreen?style=for-the-badge&logo=minecraft)
