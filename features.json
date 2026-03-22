@@ -1,26 +1,5 @@
 [
   {
-    "name": "Example1",
-    "category": "Movement",
-    "icon": "fa-squeare",
-    "safety": "safe",
-    "desc": "Example1."
-  },
-  {
-    "name": "Example2",
-    "category": "Visuals",
-    "icon": "fa-squeare", 
-    "safety": "caution",
-    "desc": "Example2."
-  },
-  {
-    "name": "Example3",
-    "category": "Combat & Utility",
-    "icon": "fa-squeare",
-    "safety": "risky",
-    "desc": "Example3."
-  },
-  {
     "name": "Moid-Fly",
     "category": "Movement",
     "icon": "fa-plane",
@@ -96,7 +75,8 @@
     "icon": "fa-squeare",
     "safety": "risky",
     "desc": "Allows you to open and interact with blocks through walls."
-  },{
+  },
+  {
     "name": "Moid-Aimbot",
     "category": "Combat & Utility",
     "icon": "fa-squeare",
