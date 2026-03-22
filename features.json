@@ -1,0 +1,23 @@
+[
+  {
+    "name": "Moid-Fly",
+    "category": "Movement",
+    "icon": "fa-plane",
+    "safety": "risky",
+    "desc": "Multiple modes for Flight like Vanilla, Packet, Motion, Glide and Zoom."
+  },
+  {
+    "name": "Vulcan-NoSlow",
+    "category": "Movement",
+    "icon": "fa-spider-web",
+    "safety": "caution",
+    "desc": "Reduces resistance in cobwebs for the latest Vulcan Anticheat version."
+  },
+  {
+    "name": "Moid-Velocity",
+    "category": "Movement",
+    "icon": "fa-ski-jumping",
+    "safety": "risky",
+    "desc": "Cancels velocity with diffrent settings."
+  }
+]
