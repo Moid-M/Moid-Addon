@@ -7,14 +7,14 @@
     "desc": "Example1."
   },
   {
-    "name": "Vulcan-NoSlow",
+    "name": "Example2",
     "category": "Visuals",
     "icon": "fa-squeare", 
     "safety": "caution",
     "desc": "Example2."
   },
   {
-    "name": "Moid-Velocity",
+    "name": "Example3",
     "category": "Combat & Utility",
     "icon": "fa-squeare",
     "safety": "risky",
