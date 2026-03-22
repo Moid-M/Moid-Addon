@@ -2,21 +2,21 @@
   {
     "name": "Example1",
     "category": "Movement",
-    "icon": "fa-plane",
+    "icon": "fa-squeare",
     "safety": "safe",
     "desc": "Example1."
   },
   {
     "name": "Vulcan-NoSlow",
     "category": "Visuals",
-    "icon": "fa-spider", 
+    "icon": "fa-squeare", 
     "safety": "caution",
     "desc": "Example2."
   },
   {
     "name": "Moid-Velocity",
     "category": "Combat & Utility",
-    "icon": "fa-paper-plane",
+    "icon": "fa-squeare",
     "safety": "risky",
     "desc": "Example3."
   },
