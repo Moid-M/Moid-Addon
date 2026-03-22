@@ -122,7 +122,7 @@
     "category": "Visuals",
     "icon": "fa-squeare",
     "safety": "safe",
-    "desc": "Renders "Ghosts" around selected entities."
+    "desc": "Renders 'Ghosts' around selected entities."
   },
   {
     "name": "Jump-Circle",
