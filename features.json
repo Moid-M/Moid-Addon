@@ -40,5 +40,151 @@
     "icon": "fa-paper-plane",
     "safety": "risky",
     "desc": "Cancels velocity with different settings."
+  },
+  {
+    "name": "Fake-Lag",
+    "category": "Combat & Utility",
+    "icon": "fa-squeare",
+    "safety": "safe",
+    "desc": "Simulates a high ping or delays your packets, making it much harder for the enemies to hit you."
+  },
+  {
+    "name": "Moid-KillAura",
+    "category": "Combat & Utility",
+    "icon": "fa-sword",
+    "safety": "caution",
+    "desc": "An advanced KillAura module with smoothed aim made for bypassing AntiCheats."
+  },
+  {
+    "name": "Moid-AutoClicker",
+    "category": "Combat & Utility",
+    "icon": "fa-squeare",
+    "safety": "caution",
+    "desc": "Just a better AutoClicker module."
+  },
+  {
+    "name": "AC-Detector",
+    "category": "Combat & Utility",
+    "icon": "fa-squeare",
+    "safety": "safe",
+    "desc": "Attempts to find out the servers AntiCheat by running possible commands."
+  },
+  {
+    "name": "Grim-Blink",
+    "category": "Combat & Utility",
+    "icon": "fa-squeare",
+    "safety": "risky",
+    "desc": "Attempts to freeze the player and allows you to walk around outside of your body on the GrimAC."
+  },
+  {
+    "name": "Triggerbot",
+    "category": "Combat & Utility",
+    "icon": "fa-squeare",
+    "safety": "caution",
+    "desc": "Hits the selected Entity if aimed at. No need to hit manually!"
+  },
+  {
+    "name": "Anti-Resourcepack",
+    "category": "Combat & Utility",
+    "icon": "fa-squeare",
+    "safety": "safe",
+    "desc": "Allows you to bypass forced Resourcepacks by the server."
+  },
+  {
+    "name": "Ghost-Hand",
+    "category": "Combat & Utility",
+    "icon": "fa-squeare",
+    "safety": "risky",
+    "desc": "Allows you to open and interact with blocks through walls."
+  },{
+    "name": "Moid-Aimbot",
+    "category": "Combat & Utility",
+    "icon": "fa-squeare",
+    "safety": "caution",
+    "desc": "A configurable Aimbot attempting to bypass anticheat checks."
+  },
+  {
+    "name": "Moid-HUD",
+    "category": "Visuals",
+    "icon": "fa-squeare",
+    "safety": "safe",
+    "desc": "Renders a HUD with variable and configurable stuff on it."
+  },
+  {
+    "name": "Moid-CircleESP",
+    "category": "Visuals",
+    "icon": "fa-squeare",
+    "safety": "safe",
+    "desc": "Renders a configurable and animated circle around your player model."
+  },
+  {
+    "name": "GhostESP",
+    "category": "Visuals",
+    "icon": "fa-squeare",
+    "safety": "safe",
+    "desc": "Renders "Ghosts" around selected entities."
+  },
+  {
+    "name": "Jump-Circle",
+    "category": "Visuals",
+    "icon": "fa-squeare",
+    "safety": "safe",
+    "desc": "Renders a configurable circle where you jumped off at."
+  },
+  {
+    "name": "Jump-Matrix",
+    "category": "Visuals",
+    "icon": "fa-squeare",
+    "safety": "safe",
+    "desc": "Renders a cool highly customizable matrix effect when jumping."
+  },
+  {
+    "name": "Moid-Trails",
+    "category": "Visuals",
+    "icon": "fa-squeare",
+    "safety": "safe",
+    "desc": "Renders a customizable trail multiple blocks youve walked through."
+  },
+  {
+    "name": "Moid-HitESP",
+    "category": "Visuals",
+    "icon": "fa-squeare",
+    "safety": "safe",
+    "desc": "Renders a cool shape when hitting a selected entity."
+  },
+  {
+    "name": "Moid-Hit-Particles",
+    "category": "Visuals",
+    "icon": "fa-squeare",
+    "safety": "safe",
+    "desc": "renders customizable particles when you hit selected entities."
+  },
+  {
+    "name": "Projectile-Predictor",
+    "category": "Visuals",
+    "icon": "fa-squeare",
+    "safety": "safe",
+    "desc": "Predicts where projectiles are going to land."
+  },
+  {
+    "name": "TargetHUD",
+    "category": "Visuals",
+    "icon": "fa-squeare",
+    "safety": "safe",
+    "desc": "Renders a customizable HUD with information about the selected entity."
+  },
+  {
+    "name": "LightESP",
+    "category": "Visuals",
+    "icon": "fa-squeare",
+    "safety": "safe",
+    "desc": "Renders light down beneath the floor. Handy for finding bases."
+  },
+  {
+    "name": "Fake-Scoreboard",
+    "category": "Visuals",
+    "icon": "fa-squeare",
+    "safety": "safe",
+    "desc": "Renders a Fake Scoreboard so that server admins cannot catch you even when making content."
   }
 ]
