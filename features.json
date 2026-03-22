@@ -1,5 +1,26 @@
 [
   {
+    "name": "Example1",
+    "category": "Movement",
+    "icon": "fa-plane",
+    "safety": "safe",
+    "desc": "Example1."
+  },
+  {
+    "name": "Vulcan-NoSlow",
+    "category": "Visuals",
+    "icon": "fa-spider", 
+    "safety": "caution",
+    "desc": "Example2."
+  },
+  {
+    "name": "Moid-Velocity",
+    "category": "Combat & Utility",
+    "icon": "fa-paper-plane",
+    "safety": "risky",
+    "desc": "Example3."
+  },
+  {
     "name": "Moid-Fly",
     "category": "Movement",
     "icon": "fa-plane",
