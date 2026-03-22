@@ -16,7 +16,7 @@
   {
     "name": "Moid-Velocity",
     "category": "Movement",
-    "icon": "fa-person-skating",
+    "icon": "fa-paper-plane",
     "safety": "risky",
     "desc": "Cancels velocity with different settings."
   }
