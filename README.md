@@ -43,6 +43,7 @@ A specialized utility expansion for the **Meteor Client** (1.21+), designed with
 | **Moid-TriggerBot** | Precision auto-attack when your crosshair meets an enemy. |
 | **VulcaWeb (NoSlow)** | Prevents slowdown from webs and other blocks. *Recommended maximum: 0.650.* |
 | **Moid-Fly** | Optimized flight logic for bypassing movement checks on various servers. |
+| **Moid-Velocity** | An velocity module with customization and focus on bypassing Anticheats. |
 
 ### 👁️ Visuals & ESP
 
