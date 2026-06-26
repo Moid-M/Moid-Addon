@@ -1,8 +1,8 @@
+
 <div align="center">
  
 # Moid Addon 
-
-<img width="256" height="256" alt="Moid-Addon" src="https://github.com/user-attachments/assets/a5fae8da-4d85-4ed8-8217-aef2aa69837b" />
+<img width="256" height="256" alt="icon" src="https://github.com/user-attachments/assets/6d56260f-b9a1-455c-a976-2ac2bb9aac52" />
 
 A specialized utility expansion for the **Meteor Client** (1.21+), designed with a focus on performance, internationalization, and "vibe-coded" logic. 
 
