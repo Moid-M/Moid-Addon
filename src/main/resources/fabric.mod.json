@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
-  "id": "moid-mddon",
-  "version": "1.5",
+  "id": "moid-addon",
+  "version": "${version}",
   "name": "Moid-Addon",
   "description": "The official Moid-Addon for Meteor Client. exploits and visuals by Dio_M.",
   "authors": ["Dio_M"],
   "contact": {
     "sources": "https://github.com/Moid-M/Moid-Addon"
   },
-  "license": "MIT",
+  "license": "CC0-1.0",
   "icon": "assets/template/icon.png",
   "environment": "*",
   "entrypoints": {

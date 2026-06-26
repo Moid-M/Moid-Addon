@@ -18,11 +18,11 @@ import java.util.Random;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.moid.addon.MoidAddon;
+import com.moid.addon.utils.ColorUtils;
 
 public class MoidLag extends Module {
 
     public enum Mode { Static, Random, Smooth }
-    public enum ColorMode { Static, Fade }
 
     private final SettingGroup sgGeneral = settings.getDefaultGroup();
     private final SettingGroup sgRender  = settings.createGroup("Render");
@@ -55,8 +55,8 @@ public class MoidLag extends Module {
         .defaultValue(true)
         .build());
 
-    private final Setting<ColorMode> colorMode = sgRender.add(new EnumSetting.Builder<ColorMode>()
-        .name("color-mode").defaultValue(ColorMode.Fade).build());
+    private final Setting<ColorUtils.ColorMode> colorMode = sgRender.add(new EnumSetting.Builder<ColorUtils.ColorMode>()
+        .name("color-mode").defaultValue(ColorUtils.ColorMode.Fade).build());
 
     private final Setting<Boolean> fadeAlpha = sgRender.add(new BoolSetting.Builder()
         .name("fade-alpha").defaultValue(true).build());
@@ -69,11 +69,11 @@ public class MoidLag extends Module {
 
     private final Setting<SettingColor> fadeColor = sgRender.add(new ColorSetting.Builder()
         .name("fade-to-color").defaultValue(new SettingColor(255, 50, 50, 100))
-        .visible(() -> colorMode.get() == ColorMode.Fade).build());
+        .visible(() -> colorMode.get() == ColorUtils.ColorMode.Fade).build());
 
     private final Setting<SettingColor> lineFadeColor = sgRender.add(new ColorSetting.Builder()
         .name("line-fade-to").defaultValue(new SettingColor(255, 50, 50, 200))
-        .visible(() -> colorMode.get() == ColorMode.Fade).build());
+        .visible(() -> colorMode.get() == ColorUtils.ColorMode.Fade).build());
 
     // Standard packet queue for Static/Random modes
     private final List<Packet<?>> packets     = new CopyOnWriteArrayList<>();
@@ -344,11 +344,11 @@ public class MoidLag extends Module {
 
         if (renderPos == null) return;
 
-        Color side = (colorMode.get() == ColorMode.Fade)
-            ? lerpColor(mainColor.get(), fadeColor.get(), (float) progress)
+        Color side = (colorMode.get() == ColorUtils.ColorMode.Fade)
+            ? ColorUtils.lerpColor(mainColor.get(), fadeColor.get(), (float) progress)
             : new Color(mainColor.get());
-        Color line = (colorMode.get() == ColorMode.Fade)
-            ? lerpColor(lineColor.get(), lineFadeColor.get(), (float) progress)
+        Color line = (colorMode.get() == ColorUtils.ColorMode.Fade)
+            ? ColorUtils.lerpColor(lineColor.get(), lineFadeColor.get(), (float) progress)
             : new Color(lineColor.get());
 
         if (fadeAlpha.get()) {
@@ -363,12 +363,4 @@ public class MoidLag extends Module {
             side, line, ShapeMode.Both, 0);
     }
 
-    private Color lerpColor(SettingColor c1, SettingColor c2, float delta) {
-        return new Color(
-            (int) MathHelper.lerp(delta, c1.r, c2.r),
-            (int) MathHelper.lerp(delta, c1.g, c2.g),
-            (int) MathHelper.lerp(delta, c1.b, c2.b),
-            (int) MathHelper.lerp(delta, c1.a, c2.a)
-        );
-    }
 }

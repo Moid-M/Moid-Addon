@@ -12,6 +12,7 @@ import net.minecraft.util.math.Vec3d;
 import java.util.LinkedList;
 
 import com.moid.addon.MoidAddon;
+import com.moid.addon.utils.ColorUtils;
 
 public class MoidTrails extends Module {
     private final SettingGroup sg = settings.getDefaultGroup();
@@ -83,9 +84,7 @@ public class MoidTrails extends Module {
         int alpha = (int) (startColor.get().a * Math.pow(progress, fadeExponent.get()));
 
         if (chroma.get()) {
-            double hue = (System.currentTimeMillis() * (chromaSpeed.get() * 0.1) + (progress * 200)) % 360;
-            java.awt.Color javaCol = java.awt.Color.getHSBColor((float) (hue / 360.0), 0.8f, 1.0f);
-            workingColor.set(javaCol.getRed(), javaCol.getGreen(), javaCol.getBlue(), alpha);
+            ColorUtils.applyChroma(workingColor, chromaSpeed.get(), progress * 200, 0.8f, alpha);
             return;
         }
 
@@ -93,7 +92,6 @@ public class MoidTrails extends Module {
             SettingColor s = startColor.get();
             SettingColor e = endColor.get();
             
-            // Linear interpolation between start and end color
             workingColor.set(
                 (int) (e.r + (s.r - e.r) * progress),
                 (int) (e.g + (s.g - e.g) * progress),

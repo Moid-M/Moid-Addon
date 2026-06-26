@@ -77,9 +77,9 @@ public class TargetHUD extends Module {
         int w = 160;
         int h = 65;
 
-        context.getMatrices().pushMatrix();
-        context.getMatrices().translate(x, y); 
-        context.getMatrices().scale(s, s);
+        context.getMatrices().push();
+        context.getMatrices().translate(x, y, 0);
+        context.getMatrices().scale(s, s, 1);
 
         // 1. IMPROVED GRADIENT BACKGROUND
         // fillGradient is a native Minecraft method - very stable and smooth
@@ -88,11 +88,11 @@ public class TargetHUD extends Module {
         context.fillGradient(0, 0, w, h, c1, c2);
 
         // 2. NAME (Bigger & Scaled)
-        context.getMatrices().pushMatrix();
+        context.getMatrices().push();
         float ns = nameScale.get().floatValue();
-        context.getMatrices().scale(ns, ns);
+        context.getMatrices().scale(ns, ns, 1);
         context.drawTextWithShadow(mc.textRenderer, target.getName().getString(), (int)(8/ns), (int)(6/ns), -1);
-        context.getMatrices().popMatrix();
+        context.getMatrices().pop();
 
         // 3. HEALTH BAR
         float actualHpRatio = MathHelper.clamp(target.getHealth() / target.getMaxHealth(), 0, 1);
@@ -121,6 +121,6 @@ public class TargetHUD extends Module {
         }
         context.drawItem(target.getMainHandStack(), w - 26, 35);
 
-        context.getMatrices().popMatrix();
+        context.getMatrices().pop();
     }
 }

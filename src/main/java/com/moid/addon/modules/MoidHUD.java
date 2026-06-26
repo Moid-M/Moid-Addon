@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.moid.addon.MoidAddon;
+import com.moid.addon.utils.ColorUtils;
 
 public class MoidHUD extends Module {
     public enum SortMode { Longest, Shortest, Alphabetical, AlphabeticalReverse }
@@ -128,9 +129,7 @@ public class MoidHUD extends Module {
         if (mirror.get()) drawX -= (float) (TextRenderer.get().getWidth(text) * s);
 
         if (chroma.get()) {
-            double hue = (System.currentTimeMillis() * (chromaSpeed.get() * 0.1) + (y * 2)) % 360;
-            java.awt.Color c = java.awt.Color.getHSBColor((float) (hue / 360f), 0.7f, 1f);
-            workingColor.set(c.getRed(), c.getGreen(), c.getBlue(), colorStart.get().a);
+            ColorUtils.applyChroma(workingColor, chromaSpeed.get(), y * 2, 0.7f, colorStart.get().a);
         } 
         else if (useSecondColor.get()) {
             // Gradient Rolling Logic

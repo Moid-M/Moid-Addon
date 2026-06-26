@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.moid.addon.MoidAddon;
+import com.moid.addon.utils.ColorUtils;
 
 public class JumpMatrix extends Module {
     public enum RenderMode { Individual, Merged }
@@ -107,9 +108,7 @@ public class JumpMatrix extends Module {
     private void updateWorkingColor(float progress, int alpha) {
         if (alpha <= 10) { workingColor.a = 0; return; }
         if (chroma.get()) {
-            double hue = (System.currentTimeMillis() * (chromaSpeed.get() * 0.1) + (progress * 100)) % 360;
-            java.awt.Color javaCol = java.awt.Color.getHSBColor((float) (hue / 360.0), 0.8f, 1.0f);
-            workingColor.set(javaCol.getRed(), javaCol.getGreen(), javaCol.getBlue(), alpha);
+            ColorUtils.applyChroma(workingColor, chromaSpeed.get(), progress * 100, 0.8f, alpha);
         } else {
             SettingColor cS = colorStart.get();
             SettingColor cE = useSecondColor.get() ? colorEnd.get() : cS;

@@ -1,6 +1,7 @@
 package com.moid.addon.modules;
 
 import com.moid.addon.MoidAddon;
+import com.moid.addon.utils.ColorUtils;
 import meteordevelopment.meteorclient.events.packets.PacketEvent;
 import meteordevelopment.meteorclient.events.render.Render3DEvent;
 import meteordevelopment.meteorclient.events.world.TickEvent;
@@ -26,7 +27,6 @@ public class MoidVelocity extends Module {
     private final SettingGroup sgRender   = settings.createGroup("Render");
 
     public enum Mode { Vanilla, Packet, Delay }
-    public enum ColorMode { Static, Fade }
 
     // --- General ---
     private final Setting<Mode> mode = sgGeneral.add(new EnumSetting.Builder<Mode>()
@@ -165,10 +165,10 @@ public class MoidVelocity extends Module {
         .build()
     );
 
-    private final Setting<ColorMode> colorMode = sgRender.add(new EnumSetting.Builder<ColorMode>()
+    private final Setting<ColorUtils.ColorMode> colorMode = sgRender.add(new EnumSetting.Builder<ColorUtils.ColorMode>()
         .name("color-mode")
         .description("Static = fixed color | Fade = fades as delay runs out")
-        .defaultValue(ColorMode.Fade)
+        .defaultValue(ColorUtils.ColorMode.Fade)
         .visible(() -> mode.get() == Mode.Delay && showBox.get())
         .build()
     );
@@ -199,7 +199,7 @@ public class MoidVelocity extends Module {
         .name("fade-to-color")
         .defaultValue(new SettingColor(255, 150, 50, 100))
         .visible(() -> mode.get() == Mode.Delay && showBox.get()
-            && colorMode.get() == ColorMode.Fade)
+            && colorMode.get() == ColorUtils.ColorMode.Fade)
         .build()
     );
 
@@ -207,7 +207,7 @@ public class MoidVelocity extends Module {
         .name("line-fade-to")
         .defaultValue(new SettingColor(255, 150, 50, 200))
         .visible(() -> mode.get() == Mode.Delay && showBox.get()
-            && colorMode.get() == ColorMode.Fade)
+            && colorMode.get() == ColorUtils.ColorMode.Fade)
         .build()
     );
 
@@ -460,11 +460,11 @@ public class MoidVelocity extends Module {
             Vec3d pos = qp.getSmoothedPos(progress);
             if (pos == null) continue;
 
-            Color side = (colorMode.get() == ColorMode.Fade)
-                ? lerpColor(mainColor.get(), fadeColor.get(), progress)
+            Color side = (colorMode.get() == ColorUtils.ColorMode.Fade)
+                ? ColorUtils.lerpColor(mainColor.get(), fadeColor.get(), progress)
                 : new Color(mainColor.get());
-            Color line = (colorMode.get() == ColorMode.Fade)
-                ? lerpColor(lineColor.get(), lineFadeColor.get(), progress)
+            Color line = (colorMode.get() == ColorUtils.ColorMode.Fade)
+                ? ColorUtils.lerpColor(lineColor.get(), lineFadeColor.get(), progress)
                 : new Color(lineColor.get());
 
             if (fadeAlpha.get()) {
@@ -481,12 +481,4 @@ public class MoidVelocity extends Module {
         }
     }
 
-    private Color lerpColor(SettingColor c1, SettingColor c2, float delta) {
-        return new Color(
-            (int) MathHelper.lerp(delta, c1.r, c2.r),
-            (int) MathHelper.lerp(delta, c1.g, c2.g),
-            (int) MathHelper.lerp(delta, c1.b, c2.b),
-            (int) MathHelper.lerp(delta, c1.a, c2.a)
-        );
-    }
 }
